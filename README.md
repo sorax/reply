@@ -1,11 +1,10 @@
-# SocketReply
+# SocketReply for Phoenix LiveView
 
-**TODO: Add description**
+**Pipe the response of LiveView functions**
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `socket_reply` to your list of dependencies in `mix.exs`:
+Simply add `socket_reply` to your list of dependencies in your `mix.exs`:
 
 ```elixir
 def deps do
@@ -15,7 +14,49 @@ def deps do
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/socket_reply>.
+and import it in your Web-Module `lib/my_app_web.ex` inside `html_helpers`.
 
+```elixir
+defp html_helpers do
+  quote do
+    # HTML escaping functionality
+    import Phoenix.HTML
+
+    # SocketReply goes here
+    import SocketReply
+
+    ...
+```
+
+Documentation can be found at https://hexdocs.pm/socket_reply
+
+## Usage
+
+You can now use `reply/2` to pipe the response in `mount` and `handle_*` all the way down.
+
+```elixir
+def mount(_params, _session, socket) do
+  socket
+  |> assign(:posts, Blog.list_posts())
+  |> assign(:post, nil)
+  |> reply(:ok)
+end
+
+def handle_params(%{"id" => id}, _, socket) do
+  socket
+  |> assign(:post, Blog.get_post!(id))
+  |> reply(:noreply)
+end
+```
+
+and if you want to reply with data, it works as well using `reply/3`
+
+```elixir
+def handle_event("update", params, socket) do
+  {:ok, post} = Blog.get_post!(id)
+
+  socket
+  |> assign(:post, Blog.get_post!(id))
+  |> reply(:reply, %{last_update: post.updated_at}})
+end
+```

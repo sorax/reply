@@ -1,18 +1,32 @@
 defmodule SocketReply do
   @moduledoc """
-  Documentation for `SocketReply`.
+  `SocketReply` lets you pipe the reply in a Phoenix LiveView.
+  Just write `socket |> assigns |> reply` in `mount` and `handle_*` functions insted of dealing with tuples.
   """
 
   @doc """
-  Hello world.
+  Transforms a piped reply into a response tuple.
 
   ## Examples
 
-      iex> SocketReply.hello()
-      :world
+      socket
+      |> assign(foo: "bar")
+      |> reply(:noreply)
 
   """
-  def hello do
-    :world
-  end
+  def reply(socket, term), do: {term, socket}
+
+  @doc """
+  Transforms a piped reply with data into a response tuple.
+  Works with maps and keyword lists.
+
+  ## Examples
+
+      socket
+      |> assign(foo: "bar")
+      |> reply(:reply, %{key: "value"})
+
+  """
+  def reply(socket, :ok, keyword) when is_list(keyword), do: {:ok, socket, keyword}
+  def reply(socket, term, payload), do: {term, payload, socket}
 end
