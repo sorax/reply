@@ -9,9 +9,12 @@ defmodule SocketReply do
 
   ## Examples
 
-      socket
-      |> assign(foo: "bar")
-      |> reply(:noreply)
+      def mount(_params, _session, socket) do
+        socket
+        |> assign(:posts, Blog.list_posts())
+        |> assign(:post, nil)
+        |> reply(:ok)
+      end
 
   """
   def reply(socket, term), do: {term, socket}
@@ -22,9 +25,13 @@ defmodule SocketReply do
 
   ## Examples
 
-      socket
-      |> assign(foo: "bar")
-      |> reply(:reply, %{key: "value"})
+      def handle_event("update", params, socket) do
+        {:ok, post} = Blog.get_post!(id)
+
+        socket
+        |> assign(:post, Blog.get_post!(id))
+        |> reply(:reply, %{last_update: post.updated_at}})
+      end
 
   """
   def reply(socket, :ok, keyword) when is_list(keyword), do: {:ok, socket, keyword}
