@@ -7,7 +7,7 @@ defmodule Reply.MixProject do
     [
       app: :reply,
       version: @version,
-      elixir: "~> 1.16",
+      elixir: "~> 1.14",
       deps: deps(),
       package: package(),
 
