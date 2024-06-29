@@ -1,6 +1,6 @@
-defmodule SocketReply do
+defmodule Reply do
   @moduledoc """
-  `SocketReply` lets you pipe the reply in a Phoenix LiveView.
+  `Reply` lets you pipe the reply in a Phoenix LiveView.
   Just write `socket |> assigns |> reply` in `mount` and `handle_*` functions insted of dealing with tuples.
   """
 

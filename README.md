@@ -1,34 +1,33 @@
-# SocketReply for Phoenix LiveView
+# Reply for Phoenix LiveView
 
 **Pipe the response of LiveView functions**
 
 ## Installation
 
-Simply add `socket_reply` to your list of dependencies in your `mix.exs`:
+Simply add `reply` to your list of dependencies in your `mix.exs`:
 
 ```elixir
 def deps do
   [
-    {:socket_reply, "~> 0.1.0"}
+    {:reply, "~> 0.2.0"}
   ]
 end
 ```
 
-and import it in your Web-Module `lib/my_app_web.ex` inside `html_helpers`.
+and import it in your Web-Module `lib/my_app_web.ex` inside `html_helpers`
 
-```elixir
+```diff
 defp html_helpers do
   quote do
     # HTML escaping functionality
     import Phoenix.HTML
 
-    # SocketReply goes here
-    import SocketReply
++   import Reply
 
     ...
 ```
 
-Documentation can be found at https://hexdocs.pm/socket_reply
+Documentation can be found at https://hexdocs.pm/reply
 
 ## Usage
 

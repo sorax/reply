@@ -1,8 +1,8 @@
-defmodule SocketReplyTest do
+defmodule ReplyTest do
   use ExUnit.Case
-  doctest SocketReply
+  doctest Reply
 
-  import SocketReply
+  import Reply
 
   defmodule DummySocket do
     @moduledoc false

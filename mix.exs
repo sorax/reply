@@ -1,20 +1,20 @@
-defmodule SocketReply.MixProject do
+defmodule Reply.MixProject do
   use Mix.Project
 
-  @version "0.1.0"
+  @version "0.2.0"
 
   def project do
     [
-      app: :socket_reply,
+      app: :reply,
       version: @version,
       elixir: "~> 1.16",
       deps: deps(),
       package: package(),
 
       # Docs
-      name: "SocketReply",
+      name: "Reply",
       description: "Pipe the response in LiveView functions",
-      source_url: "https://github.com/sorax/socket_reply",
+      source_url: "https://github.com/sorax/reply",
       docs: docs()
     ]
   end
@@ -33,16 +33,16 @@ defmodule SocketReply.MixProject do
 
   defp docs do
     [
-      main: "SocketReply",
+      main: "Reply",
       extras: ["README.md", "LICENSE.md"]
     ]
   end
 
   defp package do
     [
-      maintainers: ["Robert Röske"],
+      maintainers: ["sorax"],
       licenses: ["MIT"],
-      links: %{github: "https://github.com/sorax/socket_reply"},
+      links: %{github: "https://github.com/sorax/reply"},
       files: ~w(lib LICENSE.md mix.exs README.md)
     ]
   end
