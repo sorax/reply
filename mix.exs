@@ -1,7 +1,7 @@
 defmodule Reply.MixProject do
   use Mix.Project
 
-  @version "0.2.0"
+  @version "1.0.0"
 
   def project do
     [
@@ -13,7 +13,7 @@ defmodule Reply.MixProject do
 
       # Docs
       name: "Reply",
-      description: "Pipe the response in LiveView functions",
+      description: "Pipe the response of a LiveView or GenServer",
       source_url: "https://github.com/sorax/reply",
       docs: docs()
     ]
