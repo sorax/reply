@@ -27,7 +27,7 @@ defmodule Reply.MixProject do
 
   defp deps do
     [
-      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
+      {:ex_doc, "~> 0.34", only: :dev, runtime: false},
       {:credo, "~> 1.7", only: :dev, runtime: false}
     ]
   end
@@ -43,7 +43,7 @@ defmodule Reply.MixProject do
     [
       maintainers: ["sorax"],
       licenses: ["MIT"],
-      links: %{github: "https://github.com/sorax/reply"},
+      links: %{GitHub: "https://github.com/sorax/reply"},
       files: ~w(lib LICENSE.md mix.exs README.md)
     ]
   end
