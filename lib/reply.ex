@@ -1,39 +1,51 @@
 defmodule Reply do
   @moduledoc """
-  `Reply` lets you pipe the reply in a Phoenix LiveView.
-  Just write `socket |> assigns |> reply` in `mount` and `handle_*` functions insted of dealing with tuples.
+  Lets you pipe the reply in a Phoenix LiveView.
+  Just write `socket |> assigns |> ok()` in `mount` or `socket |> assigns |> noreply()` in `handle_*` functions insted of dealing with tuples.
   """
 
   @doc """
-  Transforms a piped reply into a response tuple.
+  Transforms a piped reply into a {:ok, socket} response tuple.
 
   ## Examples
 
       def mount(_params, _session, socket) do
         socket
         |> assign(:posts, Blog.list_posts())
-        |> assign(:post, nil)
-        |> reply(:ok)
+        |> ok()
       end
 
   """
-  def reply(socket, term), do: {term, socket}
+  def ok(socket), do: {:ok, socket}
+  def ok(socket, keyword), do: {:ok, socket, keyword}
 
   @doc """
-  Transforms a piped reply with data into a response tuple.
-  Works with maps and keyword lists.
+  Transforms a piped reply into a {:noreply, socket} response tuple.
 
   ## Examples
 
-      def handle_event("update", params, socket) do
-        {:ok, post} = Blog.get_post!(id)
-
+      def handle_event("update", %{"id" => id}, socket) do
         socket
         |> assign(:post, Blog.get_post!(id))
-        |> reply(:reply, %{last_update: post.updated_at}})
+        |> noreply()
       end
 
   """
-  def reply(socket, :ok, keyword) when is_list(keyword), do: {:ok, socket, keyword}
-  def reply(socket, term, payload), do: {term, payload, socket}
+  def noreply(socket), do: {:noreply, socket}
+
+  @doc """
+  Transforms a piped reply with payload into a {:reply, payload, socket} response tuple.
+
+  ## Examples
+
+      def handle_event("update", %{"id" => id}, socket) do
+        {:ok, post} = Blog.get_post!(id)
+
+        socket
+        |> assign(:post, post)
+        |> reply(%{last_update: post.updated_at})
+      end
+
+  """
+  def reply(socket, payload), do: {:reply, payload, socket}
 end

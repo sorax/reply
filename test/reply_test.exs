@@ -29,20 +29,21 @@ defmodule ReplyTest do
     %{socket: %DummySocket{id: "phx-F9Nto__W8RqYDAKC"}}
   end
 
-  test "reply/2 returns :ok tuple", %{socket: socket} do
-    assert socket |> reply(:ok) == {:ok, socket}
+  test "ok/2 returns {:ok, socket} tuple", %{socket: socket} do
+    assert socket |> ok() == {:ok, socket}
   end
 
-  test "reply/2 returns :noreply tuple", %{socket: socket} do
-    assert socket |> reply(:noreply) == {:noreply, socket}
+  test "ok/3 returns {:ok, socket, keyword} tuple", %{socket: socket} do
+    assert socket |> ok(layout: "foo") == {:ok, socket, [{:layout, "foo"}]}
   end
 
-  test "reply/3 returns :ok tuple", %{socket: socket} do
-    assert socket |> reply(:ok, layout: "foo") == {:ok, socket, [{:layout, "foo"}]}
+  test "noreply/2 returns {:noreply, socket} tuple", %{socket: socket} do
+    assert socket |> noreply() == {:noreply, socket}
   end
 
-  test "reply/3 returns :reply tuple", %{socket: socket} do
-    assert socket |> reply(:reply, %{data: "data"}) == {:reply, %{data: "data"}, socket}
-    assert socket |> reply(:reply, "foo-bar") == {:reply, "foo-bar", socket}
+  test "reply/3 returns {:reply, term, socket} tuple", %{socket: socket} do
+    assert socket |> reply(%{data: "data"}) == {:reply, %{data: "data"}, socket}
+    assert socket |> reply(foo: "bar") == {:reply, [foo: "bar"], socket}
+    assert socket |> reply("baz") == {:reply, "baz", socket}
   end
 end

@@ -9,20 +9,20 @@ defmodule TestHelper.Stack do
   def init(list) do
     list
     |> String.split(",", trim: true)
-    |> reply(:ok)
+    |> ok()
   end
 
   @impl true
-  def handle_call(:pop, _from, []), do: [] |> reply(:reply, nil)
+  def handle_call(:pop, _from, []), do: [] |> reply(nil)
 
   def handle_call(:pop, _from, [item | state]) do
     state
-    |> reply(:reply, item)
+    |> reply(item)
   end
 
   @impl true
   def handle_cast({:push, element}, state) do
     [element | state]
-    |> reply(:noreply)
+    |> noreply()
   end
 end

@@ -5,7 +5,7 @@
 [![Tests](https://github.com/sorax/reply/actions/workflows/test.yml/badge.svg)](https://github.com/sorax/reply/actions/workflows/test.yml)
 [![Code Quality](https://github.com/sorax/reply/actions/workflows/quality.yml/badge.svg)](https://github.com/sorax/reply/actions/workflows/quality.yml)
 [![Hex.pm](https://img.shields.io/hexpm/v/reply.svg)](https://hex.pm/packages/reply)
-[![hexdocs.pm](https://img.shields.io/badge/docs-1.0.0-brightgreen.svg)](https://hexdocs.pm/reply/1.0.0/Reply.html)
+[![hexdocs.pm](https://img.shields.io/badge/docs-1.1.0-brightgreen.svg)](https://hexdocs.pm/reply/1.1.0/Reply.html)
 [![Hex.pm Downloads](https://img.shields.io/hexpm/dt/reply)](https://hex.pm/packages/reply)
 [![License](https://img.shields.io/hexpm/l/reply.svg)](https://github.com/sorax/reply/blob/min/LICENSE.md)
 
@@ -16,7 +16,7 @@ Simply add `reply` to your list of dependencies in your `mix.exs`:
 ```elixir
 def deps do
   [
-    {:reply, "~> 1.0"}
+    {:reply, "~> 1.1"}
   ]
 end
 ```
@@ -38,31 +38,30 @@ Documentation can be found at https://hexdocs.pm/reply
 
 ## Usage
 
-You can now use `reply/2` to pipe the response in `mount` and `handle_*` all the way down.
+You can now use `ok/2`, `noreply/2` or `reply/3` to pipe the response in `mount` and `handle_*` all the way down.
 
 ```elixir
 def mount(_params, _session, socket) do
   socket
   |> assign(:posts, Blog.list_posts())
-  |> assign(:post, nil)
-  |> reply(:ok)
+  |> ok()
 end
 
 def handle_params(%{"id" => id}, _, socket) do
   socket
   |> assign(:post, Blog.get_post!(id))
-  |> reply(:noreply)
+  |> noreply()
 end
 ```
 
 and if you want to reply with data, it works as well using `reply/3`
 
 ```elixir
-def handle_event("update", params, socket) do
+def handle_event("update", %{"id" => id}, socket) do
   {:ok, post} = Blog.get_post!(id)
 
   socket
-  |> assign(:post, Blog.get_post!(id))
-  |> reply(:reply, %{last_update: post.updated_at}})
+  |> assign(:post, post)
+  |> reply(%{last_update: post.updated_at})
 end
 ```
