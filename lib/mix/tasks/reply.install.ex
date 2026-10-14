@@ -27,7 +27,7 @@ end
 
 if Code.ensure_loaded?(Igniter) do
   defmodule Mix.Tasks.Reply.Install do
-    @shortdoc "#{__MODULE__.Docs.short_doc()}"
+    @shortdoc __MODULE__.Docs.short_doc()
 
     @moduledoc __MODULE__.Docs.long_doc()
 
@@ -64,15 +64,10 @@ if Code.ensure_loaded?(Igniter) do
       with {:ok, zipper} <- Function.move_to_defp(zipper, :html_helpers, 0),
            {:ok, zipper} <- Function.move_to_function_call_in_current_scope(zipper, :quote, 1),
            {:ok, zipper} <- Common.move_to_do_block(zipper) do
-        cond do
-          match?({:ok, _}, move_to_import(zipper, Reply)) ->
-            {:ok, zipper}
-
-          match?({:ok, _}, move_to_import(zipper)) ->
-            {:ok, zipper |> move_to_import_target() |> add_import_after()}
-
-          true ->
-            {:ok, Common.add_code(zipper, "import Reply", placement: :before)}
+        case {move_to_import(zipper, Reply), move_to_import(zipper, Phoenix.HTML)} do
+          {{:ok, _}, _} -> {:ok, zipper}
+          {:error, {:ok, html}} -> {:ok, add_import_after(html)}
+          {:error, :error} -> {:ok, Common.add_code(zipper, "import Reply", placement: :before)}
         end
       else
         :error ->
@@ -84,15 +79,7 @@ if Code.ensure_loaded?(Igniter) do
       end
     end
 
-    # After `import Phoenix.HTML` like in the README, otherwise after the last import
-    defp move_to_import_target(zipper) do
-      case move_to_import(zipper, Phoenix.HTML) do
-        {:ok, zipper} -> zipper
-        :error -> move_to_last_import(zipper)
-      end
-    end
-
-    # Moves the blank line after the target import below `import Reply`
+    # Keeps a blank line after `import Phoenix.HTML` below `import Reply`
     defp add_import_after(%Zipper{node: {:import, meta, args}} = zipper) do
       newlines = get_in(meta, [:end_of_expression, :newlines]) || 1
 
@@ -104,21 +91,13 @@ if Code.ensure_loaded?(Igniter) do
       |> Common.add_code(import_reply)
     end
 
-    defp move_to_import(zipper, module \\ nil) do
-      Function.move_to_function_call_in_current_scope(zipper, :import, [1, 2], fn zipper ->
-        is_nil(module) || Function.argument_equals?(zipper, 0, module)
-      end)
-    end
-
-    defp move_to_last_import(zipper) do
-      {:ok, zipper} = move_to_import(zipper)
-
-      with right when not is_nil(right) <- Zipper.right(zipper),
-           {:ok, _} <- move_to_import(right) do
-        move_to_last_import(right)
-      else
-        _ -> zipper
-      end
+    defp move_to_import(zipper, module) do
+      Function.move_to_function_call_in_current_scope(
+        zipper,
+        :import,
+        [1, 2],
+        &Function.argument_equals?(&1, 0, module)
+      )
     end
   end
 else

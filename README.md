@@ -193,10 +193,6 @@ end
 import Reply, except: [reply: 2]
 ```
 
-## Documentation
-
-Documentation can be found at [hexdocs.pm/reply](https://hexdocs.pm/reply).
-
 ## License
 
 Reply is released under the [MIT License](LICENSE.md).

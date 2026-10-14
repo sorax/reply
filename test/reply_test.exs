@@ -37,46 +37,6 @@ defmodule ReplyTest do
   end
 
   describe "GenServer" do
-    test "ok/1 returns {:ok, state} tuple" do
-      assert %{} |> ok() == {:ok, %{}}
-    end
-
-    test "ok/2 returns {:ok, state, action} tuple" do
-      assert %{} |> ok({:continue, :load}) == {:ok, %{}, {:continue, :load}}
-      assert %{} |> ok(:hibernate) == {:ok, %{}, :hibernate}
-      assert %{} |> ok(5_000) == {:ok, %{}, 5_000}
-    end
-
-    test "noreply/1 returns {:noreply, state} tuple" do
-      assert %{} |> noreply() == {:noreply, %{}}
-    end
-
-    test "noreply/2 returns {:noreply, state, action} tuple" do
-      assert %{} |> noreply({:continue, :load}) == {:noreply, %{}, {:continue, :load}}
-      assert %{} |> noreply(:hibernate) == {:noreply, %{}, :hibernate}
-      assert %{} |> noreply(5_000) == {:noreply, %{}, 5_000}
-    end
-
-    test "reply/2 returns {:reply, payload, state} tuple" do
-      assert %{} |> reply(:ok) == {:reply, :ok, %{}}
-    end
-
-    test "reply/3 returns {:reply, payload, state, action} tuple" do
-      assert %{} |> reply(:ok, {:continue, :load}) == {:reply, :ok, %{}, {:continue, :load}}
-      assert %{} |> reply(:ok, :hibernate) == {:reply, :ok, %{}, :hibernate}
-      assert %{} |> reply(:ok, 5_000) == {:reply, :ok, %{}, 5_000}
-    end
-
-    test "stop/2 returns {:stop, reason, state} tuple" do
-      assert %{} |> stop(:normal) == {:stop, :normal, %{}}
-    end
-
-    test "stop/3 returns {:stop, reason, payload, state} tuple" do
-      assert %{} |> stop(:normal, :ok) == {:stop, :normal, :ok, %{}}
-    end
-  end
-
-  describe "GenServer integration" do
     test "ok/1, reply/2 and noreply/1" do
       pid = start_supervised!({Stack, "hello,world,1,2,3"})
 

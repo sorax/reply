@@ -5,14 +5,6 @@ defmodule Mix.Tasks.Reply.InstallTest do
 
   @web_module """
   defmodule TestWeb do
-    def live_view do
-      quote do
-        use Phoenix.LiveView
-
-        unquote(html_helpers())
-      end
-    end
-
     defp html_helpers do
       quote do
         # Translation
@@ -34,29 +26,20 @@ defmodule Mix.Tasks.Reply.InstallTest do
   end
   """
 
-  test "imports Reply in html_helpers" do
-    test_project(files: %{"lib/test_web.ex" => @web_module})
-    |> Igniter.compose_task("reply.install", [])
-    |> assert_has_patch("lib/test_web.ex", """
-    + |      import Reply
-    """)
-  end
-
   test "imports Reply after import Phoenix.HTML" do
     test_project(files: %{"lib/test_web.ex" => @web_module})
     |> Igniter.compose_task("reply.install", [])
     |> assert_content("lib/test_web.ex", "import Phoenix.HTML\n      import Reply\n")
   end
 
-  test "imports Reply after the last import without Phoenix.HTML" do
+  test "keeps the blank line after import Phoenix.HTML" do
     test_project(
       files: %{
         "lib/test_web.ex" => """
         defmodule TestWeb do
           defp html_helpers do
             quote do
-              import TestWeb.CoreComponents
-              import TestWeb.Helpers
+              import Phoenix.HTML
 
               alias Phoenix.LiveView.JS
             end
@@ -66,7 +49,7 @@ defmodule Mix.Tasks.Reply.InstallTest do
       }
     )
     |> Igniter.compose_task("reply.install", [])
-    |> assert_content("lib/test_web.ex", "import TestWeb.Helpers\n      import Reply\n")
+    |> assert_content("lib/test_web.ex", "import Phoenix.HTML\n      import Reply\n\n      alias")
   end
 
   test "is idempotent" do
@@ -77,7 +60,7 @@ defmodule Mix.Tasks.Reply.InstallTest do
     |> assert_unchanged()
   end
 
-  test "imports Reply when html_helpers has no imports" do
+  test "imports Reply at the top without import Phoenix.HTML" do
     test_project(
       files: %{
         "lib/test_web.ex" => """
@@ -92,9 +75,7 @@ defmodule Mix.Tasks.Reply.InstallTest do
       }
     )
     |> Igniter.compose_task("reply.install", [])
-    |> assert_has_patch("lib/test_web.ex", """
-    + |      import Reply
-    """)
+    |> assert_content("lib/test_web.ex", "quote do\n      import Reply\n      alias")
   end
 
   test "warns when html_helpers is missing" do
