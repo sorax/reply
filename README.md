@@ -33,7 +33,19 @@ end
 
 ## Installation
 
-Simply add `reply` to your list of dependencies in your `mix.exs`:
+### With Igniter
+
+If you use [Igniter](https://hexdocs.pm/igniter), run:
+
+```sh
+mix igniter.install reply
+```
+
+This adds `reply` to your dependencies and imports it in `html_helpers` of your web module.
+
+### Manually
+
+Add `reply` to your list of dependencies in your `mix.exs`:
 
 ```elixir
 def deps do

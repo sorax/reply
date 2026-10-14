@@ -7,7 +7,7 @@ defmodule Reply.MixProject do
     [
       app: :reply,
       version: @version,
-      elixir: "~> 1.14",
+      elixir: "~> 1.15",
       deps: deps(),
       package: package(),
 
@@ -27,6 +27,7 @@ defmodule Reply.MixProject do
 
   defp deps do
     [
+      {:igniter, "~> 0.6", optional: true},
       {:ex_doc, "~> 0.40", only: :dev, runtime: false},
       {:credo, "~> 1.7", only: :dev, runtime: false}
     ]
