@@ -5,7 +5,7 @@
 [![Tests](https://github.com/sorax/reply/actions/workflows/test.yml/badge.svg)](https://github.com/sorax/reply/actions/workflows/test.yml)
 [![Code Quality](https://github.com/sorax/reply/actions/workflows/quality.yml/badge.svg)](https://github.com/sorax/reply/actions/workflows/quality.yml)
 [![Hex.pm](https://img.shields.io/hexpm/v/reply.svg)](https://hex.pm/packages/reply)
-[![hexdocs.pm](https://img.shields.io/badge/docs-1.2.0-brightgreen.svg)](https://hexdocs.pm/reply/1.2.0/Reply.html)
+[![hexdocs.pm](https://img.shields.io/badge/docs-1.2.1-brightgreen.svg)](https://hexdocs.pm/reply/1.2.1/Reply.html)
 [![Hex.pm Downloads](https://img.shields.io/hexpm/dt/reply)](https://hex.pm/packages/reply)
 [![License](https://img.shields.io/hexpm/l/reply.svg)](https://github.com/sorax/reply/blob/main/LICENSE.md)
 

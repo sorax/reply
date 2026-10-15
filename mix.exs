@@ -1,7 +1,7 @@
 defmodule Reply.MixProject do
   use Mix.Project
 
-  @version "1.2.0"
+  @version "1.2.1"
 
   def project do
     [
@@ -39,7 +39,7 @@ defmodule Reply.MixProject do
       maintainers: ["sorax"],
       licenses: ["MIT"],
       links: %{GitHub: "https://github.com/sorax/reply"},
-      files: ~w(lib LICENSE.md mix.exs README.md)
+      files: ~w(lib LICENSE.md mix.exs README.md usage-rules.md)
     ]
   end
 end
